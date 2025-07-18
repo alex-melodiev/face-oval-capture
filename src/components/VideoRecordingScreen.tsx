@@ -52,8 +52,13 @@ const VideoRecordingScreen: React.FC<VideoRecordingScreenProps> = ({ onComplete 
   const getDevices = async () => {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = devices.filter(device => device.kind === 'audioinput');
-      const videoInputs = devices.filter(device => device.kind === 'videoinput');
+      // Filter out devices with empty deviceIds
+      const audioInputs = devices.filter(device => 
+        device.kind === 'audioinput' && device.deviceId && device.deviceId.trim() !== ''
+      );
+      const videoInputs = devices.filter(device => 
+        device.kind === 'videoinput' && device.deviceId && device.deviceId.trim() !== ''
+      );
       
       setAudioDevices(audioInputs);
       setVideoDevices(videoInputs);
